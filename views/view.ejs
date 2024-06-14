@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Khataabook</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+        :root {
+            --black: #000000;
+            --white: #fff;
+            --gray: gray;
+        }
+
+        @font-face {
+            font-family: neue;
+            src: url("/NeueMachina-Regular.otf");
+        }
+
+        * {
+            font-family: neue;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div
+        class="delete hidden h-screen w-screen backdrop-blur-[5px] backdrop-brightness-50 flex items-center justify-center fixed top-0">
+        <div
+            class="dialog flex flex-col items-center justify-center max-w-80 gap-7 bg-gray-200 text-md text-center rounded-xl px-14 py-6 shadow-xl text-[--black]">
+            Are you sure? You want to delete this note!
+            <div class="flex gap-5">
+                <p class="bg-blue-500 px-3 py-1 rounded-md text-[--white] cursor-pointer cancel-btn">
+                    Cancel
+                </p>
+                <a class="bg-red-600 px-3 py-1 rounded-md text-[--white]" href="/delete/<%=hisaab._id%>">Delete</a>
+            </div>
+        </div>
+    </div>
+    <nav class="flex align-center justify-between px-14 py-8">
+        <a href="/dashboard/<%=user._id%>">Khataabook</a>
+        <ul class="flex gap-10">
+            <li>
+                <%=user.email%>
+            </li>
+            <li><a href="/createhisaab/<%=user._id%>">Create New Note</a></li>
+        </ul>
+    </nav>
+    <main class="max-w-4xl px-24 py-8">
+        <%if(hisaab.sharable || (creater._id.toString()===user._id.toString())){%>
+
+            <h2 class="text-xl">
+                You are viewing the note of <b>
+                    <%=hisaab.title%>
+                </b>.
+            </h2>
+            <p class="text-[--gray] ml-4 mt-4">
+                <%hisaab.description.split("\n").forEach((text)=>{%> <%=text%><br />
+                        <%})%>
+            </p>
+            <div class="flex">
+                <%if(hisaab.sharable){%>
+                    <p
+                        class="text-[--gray] ml-2 mt-10 w-fit text-sm px-4 py-2 bg-green-500 text-[--white] rounded-md flex gap-1">
+                        <i class="ri-check-line text-[--white]"></i> Sharable
+                    </p>
+                    <%}else{%>
+                        <p
+                            class="text-[--gray] ml-2 mt-10 w-fit text-sm px-4 py-2 bg-red-500 text-[--white] rounded-md flex gap-1">
+                            <i class="ri-lock-line text-[--white]"></i>Non-Sharable
+                        </p>
+                        <%}%>
+                            <%if(!hisaab.encrypted){%>
+                                <p
+                                    class="text-[--gray] ml-2 mt-10 w-fit text-sm px-4 py-2 bg-green-500 text-[--white] rounded-md flex gap-1">
+                                    <i class="ri-check-line text-[--white]"></i>Non-Encrypted
+                                </p>
+                                <%}else{%>
+                                    <%if(creater._id.toString()!==user._id.toString()){%>
+                                        <%if(!hisaab.sharable){%>
+                                            <p
+                                                class="text-[--gray] ml-2 mt-10 w-fit text-sm px-4 py-2 bg-red-500 text-[--white] rounded-md flex gap-1">
+                                                <i class="ri-lock-line text-[--white]"></i>Encrypted
+                                            </p>
+                                            <%}%>
+                                                <%}else{%>
+                                                    <p
+                                                        class="text-[--gray] ml-2 mt-10 w-fit text-sm px-4 py-2 bg-red-500 text-[--white] rounded-md flex gap-1">
+                                                        <i class="ri-lock-line text-[--white]"></i>Encrypted
+                                                    </p>
+
+                                                    <%}%>
+                                                        <%}%>
+            </div>
+            <% if(hisaab.createrId.toString()==user._id.toString()){ %>
+                <div class="flex gap-2">
+                    <p class="text-[--gray] ml-4 mt-4">
+                        <a href="/edit/<%=hisaab._id%>">Edit Note</a>
+                    </p>
+                    <p class="text-red-500 ml-4 mt-4 delete-btn cursor-pointer">Delete</p>
+                </div>
+                <% } else { %>
+                    <p class="text-[--gray] ml-4 mt-4">Creater: <%=creater.email%>
+                    </p>
+                    <% } %>
+                        <%}else{%>
+                            <h3>This note is not sharable</h3>
+                            <%}%>
+    </main>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    document.querySelector(".delete-btn").addEventListener("click", () => {
+        gsap.from(".dialog",{
+            scale:0.5,
+            duration:0.4
+        })
+        document.querySelector(".delete").style.display = `flex`;
+    });
+    document.querySelector(".cancel-btn").addEventListener("click", () => {
+        document.querySelector(".delete").style.display = `none`;
+    });
+</script>
+
+</html>

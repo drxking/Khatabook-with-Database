@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khataabook</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        :root {
+            --black: #000000;
+            --white: #e5e5e5;
+            --gray:gray;
+        }
+
+        @font-face {
+            font-family: neue;
+            src: url("/NeueMachina-Regular.otf");
+        }
+
+        * {
+            font-family: neue;
+            color: var(--black);
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div class="logout hidden fixed h-screen w-screen backdrop-blur-[5px] backdrop-brightness-75 flex items-center justify-center top-0">
+        <div class="dialog flex flex-col items-center justify-center max-w-80 gap-7 bg-gray-200 text-md text-center rounded-xl px-14 py-6 shadow-xl text-[--black]">
+            Are you sure you want to Logout?
+            <div class="flex gap-5">
+                
+                <p class="bg-blue-500 px-3 py-1 rounded-md text-[--white] cursor-pointer cancel-btn" >Cancel</p>
+                <a class="bg-red-600 px-3 py-1 rounded-md text-[--white]" href="/logout">Log Out</a>
+            </div>
+        </div>
+    </div>
+    <nav class="flex align-center justify-between px-14 py-8">
+        <a href="/dashboard/<%=user._id%>">Khataabook</a>
+        <ul class="flex gap-10">
+            <li class="text-red-500 cursor-pointer logout-btn">LogOut</li> 
+            <li>
+                <%=user.email%>
+            </li>
+            <li><a href="/createhisaab/<%=user._id%>">Create New Note</a></li>
+        </ul>
+    </nav>
+    <main class="px-20 mt-5 flex flex-col">
+        <h3 class="ml-4 text-xl uppercase font-semibold">Your Dashboard</h3>
+        <%if(hisaab.length>0){%>
+            <div class="section flex justify-start flex-wrap w-full ">
+                <%hisaab.forEach((hisab)=>{%>
+                    <div class="hisaab m-4 bg-gray-200 min-w-[360px] w-[360px] min-h-24 p-6 rounded-md hover:bg-gray-300 transition-all duration-300">
+                        <div class="top flex justify-between gap-10 items-center">
+                            <div class="left flex gap-2">
+                                <%if(hisab.encrypted){%>
+                                    <div class="encrypted flex gap-1 bg-blue-500 text-[12px] px-2 py-1 rounded-md text-[--white]">
+                                        <i class="ri-lock-line text-[--white]"></i>Encrypted
+                                    </div>
+                                <%}else{%>
+                                    <div class="available flex gap-1 bg-green-500 flex   text-[12px] px-2 py-1 rounded-md text-[--white]">
+                                        <i class="ri-lock-line text-[--white]" ></i>Available
+                                    </div>
+                                <%}%>
+                                <%if(hisab.sharable){%>
+                                    <div class="sharable bg-gray-300 text-md px-1 rounded-2xl">
+                                        <i class="ri-share-forward-fill"></i>
+                                    </div>
+                                <%}%>
+                                
+                            </div>
+                            <div class="right text-[12px] text-center text-[--gray]">
+                                Created on <br> <%=hisab.createdDate%>
+                            </div>
+                        </div>
+                        <div class="bottom mt-4 ">
+                            <div class="h2 text-xl font-semibold w-full overflow-hidden truncate font-['poppins'] text-[--black]"><%=hisab.title%></div>
+                            <a href="/check/<%=hisab._id%>brUtAlItY" class="inline-block text-[--gray] mt-4 ">view note</a>
+                        </div>
+                    </div>
+                <%})%>
+            </div>
+        <%}else{%>
+            <h2 class="text-[--gray] w-full text-left mt-4 ml-4">Please create any hisaab to View something here!</h2>
+        <%}%>
+    </main>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    document.querySelector('.logout-btn').addEventListener("click",()=>{
+        document.querySelector(".logout").style.display = `flex`;
+        gsap.from(".dialog",{
+            scale:0.5,
+            duration:0.2
+        })
+    })
+    document.querySelector('.cancel-btn').addEventListener("click",()=>{
+        document.querySelector(".logout").style.display = `none`;
+    })
+</script>
+
+</html>

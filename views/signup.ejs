@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khaatabook - Signup</title>
+    <style>
+        :root {
+            --black: #000;
+            --white: #fff;
+        }
+
+        @font-face {
+            font-family: neue;
+            src: url("/NeueMachina-Regular.otf");
+        }
+
+        * {
+            font-family: neue;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(128, 128, 128, 0.5);
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <%if(exist.length> 0){%>
+        <div
+            class="popup absolute left-1/2 top-0 text-sm text-center -translate-x-1/2 px-4 py-2 text-[--white] bg-blue-500 rounded-md">
+            <%=exist%>
+        </div>
+        <%}else{%>
+
+            <%}%>
+
+                <nav class="flex align-center justify-between px-14 py-8">
+                    <a href="/">Khataabook</a>
+                    <ul class="flex gap-10">
+                        <li><a href="/login">Login</a></li>
+                    </ul>
+                </nav>
+                <div class="section flex  items-center justify-center h-[75vh]">
+                    <form method="post" action="/register" class="flex flex-col gap-3 items-start w-fit">
+                        <h2>Create Your Account</h2>
+                        <input class="bg-gray-200 rounded-md px-6 py-2 w-full" type="email" name="email"
+                            placeholder="Email">
+                        <input class="bg-gray-200 rounded-md px-6 py-2 w-full" type="text" name="password" required
+                            minlength="4" autocomplete="off" placeholder="Password">
+                        <input class="bg-blue-500 rounded-md px-4 py-2 text-[--white]" type="submit" value="Submit">
+                    </form>
+                </div>
+</body>
+
+</html>
