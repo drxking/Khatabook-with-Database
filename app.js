@@ -11,11 +11,11 @@ const hisaabModel = require("./models/hisaabModel")
 
 
 
-
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.set("view engine", "ejs")
+
 app.use(expressSession({
     resave: false,
     saveUninitialized: false,
@@ -24,6 +24,19 @@ app.use(expressSession({
 app.use(flash())
 app.use(cookieParser())
 
+
+let isLoggedIn = (req,res,next)=>{
+    if(req.cookies.user){
+        next()
+        console.log("User is logged in")
+    }
+    else{
+        req.flash("message","You are not LoggedIn, Please Login First")
+        res.redirect('/login')
+    }
+}
+
+
 app.get('/', (req, res) => {
     res.render("index")
 })
@@ -31,9 +44,7 @@ app.get('/', (req, res) => {
 
 app.get("/login", async (req, res) => {
     try {
-        if (req.cookies.user) {
-            return res.redirect(`/dashboard/${req.cookies.user}`)
-        }
+        if (req.cookies.user) return res.redirect(`/dashboard/${req.cookies.user}`)
         let message = req.flash("message")
         res.render("login", { message })
     }
@@ -109,7 +120,7 @@ app.post("/login", async (req, res) => {
 
 
 
-app.get("/dashboard/:id", async (req, res) => {
+app.get("/dashboard/:id", isLoggedIn, async (req, res) => {
     try {
         let user = await userModel.findOne({ _id: req.params.id })
         let hisaab = await hisaabModel.find({ createrId: { $eq: req.params.id } })
@@ -126,7 +137,7 @@ app.get("/dashboard/:id", async (req, res) => {
 
 
 
-app.get("/createhisaab/:user", (req, res) => {
+app.get("/createhisaab/:user",isLoggedIn, (req, res) => {
     try {
         let user = req.params.user;
         res.render("create", { user })
@@ -138,7 +149,7 @@ app.get("/createhisaab/:user", (req, res) => {
 
 
 
-app.post("/create/:userid", async (req, res) => {
+app.post("/create/:userid",isLoggedIn, async (req, res) => {
     try {
         let { title, description, sharable, encrypted, password } = req.body;
         (encrypted === "on") ? encrypted = true : encrypted = false;
@@ -166,7 +177,7 @@ app.post("/create/:userid", async (req, res) => {
 
 
 
-app.get("/check/:hisaab", async (req, res) => {
+app.get("/check/:hisaab", isLoggedIn, async (req, res) => {
     try {
         let url = req.params.hisaab
         url = url.replace("brUtAlItY", "");
@@ -185,7 +196,7 @@ app.get("/check/:hisaab", async (req, res) => {
     }
 })
 
-app.post("/encryptcheck/:hisaab", async (req, res) => {
+app.post("/encryptcheck/:hisaab",isLoggedIn, async (req, res) => {
     try {
         let hisaab = await hisaabModel.findOne({ _id: { $eq: req.params.hisaab } })
         if (req.body.password === hisaab.password) {
@@ -203,7 +214,7 @@ app.post("/encryptcheck/:hisaab", async (req, res) => {
 
 
 
-app.get("/view/:hisaab", async (req, res) => {
+app.get("/view/:hisaab",isLoggedIn, async (req, res) => {
     try {
         if (req.cookies.user) {
             let user = await userModel.findOne({ _id: { $eq: req.cookies.user } })
@@ -221,7 +232,7 @@ app.get("/view/:hisaab", async (req, res) => {
     }
 })
 
-app.get("/edit/:hisaab", async (req, res) => {
+app.get("/edit/:hisaab",isLoggedIn, async (req, res) => {
     try {
         let user = await userModel.findOne({ _id: { $eq: req.cookies.user } })
         let hisaab = await hisaabModel.findOne({ _id: { $eq: req.params.hisaab } })
@@ -232,7 +243,7 @@ app.get("/edit/:hisaab", async (req, res) => {
     }
 })
 
-app.post("/update/:hisaab", async (req, res) => {
+app.post("/update/:hisaab",isLoggedIn, async (req, res) => {
     try {
         let { title, description, sharable, encrypted, password } = req.body;
         (encrypted === "on") ? encrypted = true : encrypted = false;
@@ -253,7 +264,7 @@ app.post("/update/:hisaab", async (req, res) => {
 })
 
 
-app.get("/delete/:hisaab", async (req, res) => {
+app.get("/delete/:hisaab",isLoggedIn, async (req, res) => {
     try {
         await hisaabModel.findOneAndDelete({ _id: { $eq: req.params.hisaab } })
         let user = await userModel.findOne({ _id: req.cookies.user });
