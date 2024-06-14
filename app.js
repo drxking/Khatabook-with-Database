@@ -28,7 +28,6 @@ app.use(cookieParser())
 let isLoggedIn = (req,res,next)=>{
     if(req.cookies.user){
         next()
-        console.log("User is logged in")
     }
     else{
         req.flash("message","You are not LoggedIn, Please Login First")
