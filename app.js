@@ -5,6 +5,8 @@ const path = require('path')
 const expressSession = require('express-session')
 const flash = require("connect-flash")
 const cookieParser = require("cookie-parser");
+require("dotenv").config()
+
 const mongooseconnection = require("./config/mongoose")
 const userModel = require("./models/userModel")
 const hisaabModel = require("./models/hisaabModel")
@@ -286,6 +288,6 @@ app.get("/logout", (req, res) => {
     }
 })
 
-app.listen(3000, () => {
-    log("Listening at port 3000")
+app.listen(process.env.PORT, () => {
+    log(`Listening at port ${process.env.PORT}`)
 })
