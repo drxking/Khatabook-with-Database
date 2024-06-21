@@ -38,39 +38,38 @@
 </head>
 
 <body>
-    <nav class="flex align-center justify-between px-14 py-8">
+    <nav class="flex align-center justify-between px-4 text-sm md:text-base md:px-14 py-8">
         <a href="/dashboard/<%=user._id%>">Khataabook</a>
         <ul class="flex gap-10">
             <li>
                 <%=user.email%>
             </li>
-            <li><a href="/dashboard/<%=user._id%>">Home</a></li>
         </ul>
     </nav>
-    <main class="max-w-3xl  px-24 py-8 ">
+    <main class="px-4  md:px-24 py-8 ">
         <h2 class="text-xl font-bold mb-4">Edit Your Note</h2>
 
         <form class="flex flex-col items-start w-full" action="/update/<%=hisaab._id%>" method="post">
             <div class="mb-4 w-2/3">
                 <input type="text" id="title" name="title" value="<%=hisaab.title%>"
-                    placeholder="Shopping Hisaab, Ghar ka Kharch..." class="w-full px-3 py-2 bg-gray-100 rounded">
+                    placeholder="Note Heading..." class="w-full px-3 py-2 bg-gray-100 rounded  md:text-base text-sm">
             </div>
 
             <div class="mb-4 w-full">
-                <textarea id="details" name="description" placeholder="Daal, Aata, Cheeni"
-                    class="px-3 py-2  bg-gray-100 rounded w-full h-72 resize-none"><%=hisaab.description%></textarea>
+                <textarea id="details" name="description" placeholder="Note description..."
+                    class="px-3 py-2  bg-gray-100 rounded w-full h-72 resize-none md:text-base text-sm"><%=hisaab.description%></textarea>
             </div>
-            <div class="flex gap-10">
+            <div class="flex flex-col md:flex-row md:gap-10">
                 <div class="mb-4 flex flex-col gap-2">
                     <label class="inline-flex items-center">
                         <%if(hisaab.encrypted){%>
                             <input id="encrypt" type="checkbox" name="encrypted" checked
-                                class="form-checkbox text-blue-500">
-                            <span class="ml-2">Encrypt this file</span>
+                                class="form-checkbox text-blue-500 md:text-base text-sm">
+                            <span class="ml-2 md:text-base text-sm">Encrypt this file</span>
                             <%}else{%>
                                 <input id="encrypt" type="checkbox" name="encrypted"
-                                    class="form-checkbox text-blue-500">
-                                <span class="ml-2">Encrypt this file</span>
+                                    class="form-checkbox text-blue-500 md:text-base text-sm">
+                                <span class="ml-2 md:text-base text-sm">Encrypt this file</span>
                                 <%}%>
                     </label>
                     <input id="password" type="password" value="<%=hisaab.password%>" name="password"
@@ -83,11 +82,11 @@
                         <%if(hisaab.sharable){%>
                             <input id="sharable" type="checkbox" name="sharable" checked
                                 class="form-checkbox text-blue-500">
-                            <span class="ml-2">Shareable file?</span>
+                            <span class="ml-2 md:text-base text-sm">Shareable file?</span>
                             <%}else{%>
                                 <input id="sharable" type="checkbox" name="sharable"
                                     class="form-checkbox text-blue-500">
-                                <span class="ml-2">Shareable file?</span>
+                                <span class="ml-2 md:text-base text-sm">Shareable file?</span>
                                 <%}%>
 
                     </label>

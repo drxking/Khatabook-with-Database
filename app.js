@@ -138,10 +138,11 @@ app.get("/dashboard/:id", isLoggedIn, async (req, res) => {
 
 
 
-app.get("/createhisaab/:user",isLoggedIn, (req, res) => {
+app.get("/createhisaab/:user",isLoggedIn,async (req, res) => {
     try {
+        let datauser = await userModel.findOne({_id:req.params.user})
         let user = req.params.user;
-        res.render("create", { user })
+        res.render("create", { user,datauser })
     }
     catch (err) {
         res.status(500).send(err.message)

@@ -41,24 +41,23 @@
             </div>
         </div>
     </div>
-    <nav class="flex align-center justify-between px-14 py-8">
+    <nav class="flex align-center justify-between px-4 text-sm md:text-base md:px-14 py-8">
         <a href="/dashboard/<%=user._id%>">Khataabook</a>
         <ul class="flex gap-10">
             <li>
                 <%=user.email%>
             </li>
-            <li><a href="/createhisaab/<%=user._id%>">Create New Note</a></li>
         </ul>
     </nav>
-    <main class="max-w-4xl px-24 py-8">
+    <main class=" px-4 md:px-24 py-8">
         <%if(hisaab.sharable || (creater._id.toString()===user._id.toString())){%>
 
-            <h2 class="text-xl">
+            <h2 class="md:text-xl text-lg">
                 You are viewing the note of <b>
                     <%=hisaab.title%>
                 </b>.
             </h2>
-            <p class="text-[--gray] ml-4 mt-4">
+            <p class="text-[--gray] md:ml-4 ml-2 mt-4 text-sm md:text-base">
                 <%hisaab.description.split("\n").forEach((text)=>{%> <%=text%><br />
                         <%})%>
             </p>
@@ -98,10 +97,10 @@
             </div>
             <% if(hisaab.createrId.toString()==user._id.toString()){ %>
                 <div class="flex gap-2">
-                    <p class="text-[--gray] ml-4 mt-4">
+                    <p class="text-[--gray] ml-4 mt-4 md:text-base text-sm">
                         <a href="/edit/<%=hisaab._id%>">Edit Note</a>
                     </p>
-                    <p class="text-red-500 ml-4 mt-4 delete-btn cursor-pointer">Delete</p>
+                    <p class="text-red-500 ml-4 mt-4 delete-btn cursor-pointer md:text-base text-sm">Delete</p>
                 </div>
                 <% } else { %>
                     <p class="text-[--gray] ml-4 mt-4">Creater: <%=creater.email%>
