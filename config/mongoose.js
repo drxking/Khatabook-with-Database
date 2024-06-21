@@ -1,6 +1,7 @@
 const mongoose =require('mongoose')
 const log = require('debug')("development:mongoose")
-mongoose.connect("mongodb://127.0.0.1:27017/khatabook");
+require("dotenv").config
+mongoose.connect(process.env.MONGOURL);
 
 const db = mongoose.connection;
 
