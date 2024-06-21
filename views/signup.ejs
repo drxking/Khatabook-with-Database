@@ -36,16 +36,15 @@
 <body>
     <%if(exist.length> 0){%>
         <div
-            class="popup absolute left-1/2 top-0 text-sm text-center -translate-x-1/2 px-4 py-2 text-[--white] bg-blue-500 rounded-md">
+            class="popup absolute left-1/2 top-4 animate-pulse   text-xs md:text-sm text-center -translate-x-1/2 px-4 py-2 text-[--white] bg-blue-700 rounded-md">
             <%=exist%>
         </div>
         <%}else{%>
 
             <%}%>
-
-                <nav class="flex align-center justify-between lg:py-14 px-4 py-8">
+                <nav class="flex items-center justify-between md:px-14 px-4 py-8">
                     <a href="/">Khataabook</a>
-                    <ul class="flex gap-10">
+                    <ul class="flex">
                         <li><a href="/login">Login</a></li>
                     </ul>
                 </nav>
